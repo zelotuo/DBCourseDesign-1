@@ -7,6 +7,11 @@ using Oracle.ManagedDataAccess.Client;
 
 namespace No9Gallery.Services
 {
+    public class ConString
+    {
+        public static string conString = "User Id=C##DBCD;Password=12345678;Data Source=localhost:1521/orcl";
+    }
+
     public class FakeLoginService: ILoginServiceInterface
     {
 
@@ -14,9 +19,8 @@ namespace No9Gallery.Services
         {
 
             string getID, getPassword, status;
-            string conString = "User Id=DBCD;Password=12345678;Data Source=localhost:1521/orcl";
 
-            using (OracleConnection con = new OracleConnection(conString))
+            using (OracleConnection con = new OracleConnection(ConString.conString))
             {
                 using (OracleCommand cmd = con.CreateCommand())
                 {
