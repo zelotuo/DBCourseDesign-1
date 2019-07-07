@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using No9Gallery.Services;
 
 namespace No9Gallery
 {
@@ -31,6 +33,17 @@ namespace No9Gallery
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //Add Cookie服务 ----------------------------------------
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
+                {
+                    o.LoginPath = new PathString("/Login/Index");
+                    //未实现
+                    o.AccessDeniedPath = new PathString("/Home/Error");
+                });
+            //----------------------------------------------------------------
+
+            services.AddSingleton<ILoginServiceInterface, FakeLoginService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -49,6 +62,7 @@ namespace No9Gallery
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
