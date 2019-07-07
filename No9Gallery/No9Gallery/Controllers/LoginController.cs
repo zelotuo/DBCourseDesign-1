@@ -36,9 +36,9 @@ namespace No9Gallery.Controllers
                 if (getUser != null)
                 {
                     var claimIdentity = new ClaimsIdentity("Cookie");
-                    claimIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID));
-                    claimIdentity.AddClaim(new Claim(ClaimTypes.Name, user.ID));
-
+                    claimIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, getUser.ID));
+                    claimIdentity.AddClaim(new Claim(ClaimTypes.Name, getUser.Name));
+                    claimIdentity.AddClaim(new Claim("Avatar", getUser.Avatar));
                     claimIdentity.AddClaim(new Claim(ClaimTypes.Role, getUser.Status));
 
                     var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
